@@ -34,13 +34,13 @@ StuB stub[1001];
 StuR stur[1001];  
 
 //定义函数
-int Add();
-int Addtolres(StuR stu);//计算总成绩
-int Addtolcre(StuR stu);//计算总学分
+void Add();
+void Addtolres(StuR stu);//计算总成绩
+void Addtolcre(StuR stu);//计算总学分
 
-int Input();//添加记录
-int Inputstub();//录入学生基本信息
-int Inputstur();//录入学生成绩信息
+void Input();//添加记录
+void Inputstub();//录入学生基本信息
+void Inputstur();//录入学生成绩信息
 
 int Show();//显示记录
 int Selectsturall();//查询全部成绩
@@ -55,23 +55,23 @@ int Delete();//删除记录
 int Deletestu();//删除一个学生信息
 int Deletedoor(string dor);//删除一个寝室信息
 
-int Rewrite();//修改记录
-int Rewritestub();//修改基本信息(按学号)
-int Rewritestur();//修改成绩信息(按学号)
+void Rewrite();//修改记录
+void Rewritestub();//修改基本信息(按学号)
+void Rewritestur();//修改成绩信息(按学号)
 
-int Compare(StuR s1,StuR s2);//排序比较函数
-int Sortstu();//排序函数
+void Compare(StuR s1,StuR s2);//排序比较函数
+void Sortstu();//排序函数
 
-int Modify();//修改密码
+void Modify();//修改密码
 
 int c;  //全局变量
 
-int rootmenu()                              //跟用户菜单选择系统函数
+void rootmenu()                              //跟用户菜单选择系统函数
 {
         system("clear");
-        std::cout<<"\t\t    ╭♈♉♊♋♌♎══■□■□══════╮\n";
-        std::cout<<"\t\t    │       学生信息管理系统     |\n";
-        std::cout<<"\t\t    ╰══════■□■□══♏♐♑♓♒♍╯\n";
+        std::cout<<"\t\t     ╭♈♉♊♋♌♎══■□■□══════╮\n";
+        std::cout<<"\t\t     │       学生信息管理系统     |\n";
+        std::cout<<"\t\t     ╰══════■□■□══♏♐♑♓♒♍╯\n";
         std::cout<<"\t\t    ┌──────────────────────────┐\n";
         std::cout<<"\t\t    │ 1. 添加记录    2. 显示记录  │\n";
         std::cout<<"\t\t    │                          |\n";
@@ -95,7 +95,7 @@ int rootmenu()                              //跟用户菜单选择系统函数
             
             break;
         case 3:
-            
+            Select();
             break;
         case 4:
             
@@ -112,10 +112,9 @@ int rootmenu()                              //跟用户菜单选择系统函数
         default:
             break;
     }
-    return c;
 }
 
-int guestmenu()                              //客人用户菜单选择系统函数
+void guestmenu()                              //客人用户菜单选择系统函数
 {
         system("clear");
         std::cout<<"\t\t    ╭♈♉♊♋♌♎══■□■□══════╮\n";
@@ -124,9 +123,9 @@ int guestmenu()                              //客人用户菜单选择系统函
         std::cout<<"\t\t    ┌──────────────────────────┐\n";
         std::cout<<"\t\t    │ 1. 信息查询    2. 显示记录  │\n";
         std::cout<<"\t\t    │                          |\n";
-        std::cout<<"\t\t    │ 3. 数据计算                │\n";
+        std::cout<<"\t\t    │ 3. 数据计算               │\n";
         std::cout<<"\t\t    │                          │\n";
-        std::cout<<"\t\t    │ 0. 退出程序                |\n";
+        std::cout<<"\t\t    │ 0. 退出程序               |\n";
         std::cout<<"\t\t    └──────────────────────────┘\n";
         std::cout<<"\t\t请您选择(0-3):";
     cin>>c;
@@ -135,7 +134,7 @@ int guestmenu()                              //客人用户菜单选择系统函
     cin>>c;}
     switch (c) {
         case 1:
-            Input();
+            Select();
             break;
         case 2:
             
@@ -146,7 +145,6 @@ int guestmenu()                              //客人用户菜单选择系统函
         default:
             break;
     }
-    return c;
 }
 
 void login()   //登录界面
@@ -175,7 +173,7 @@ void login()   //登录界面
     }
 }
 
-int Inputstub(){//录入学生基本信息
+void Inputstub(){//录入学生基本信息
     int n,i;
     cout<<"请输入学生个数:";
     cin>>n;
@@ -196,10 +194,9 @@ int Inputstub(){//录入学生基本信息
         cout<<"输入电话:";
         cin>>stub[i].tel;
         }
-    return 0;
 }
 
-int Inputstur(){//录入学生成绩信息
+void Inputstur(){//录入学生成绩信息
     int n,i;
     cout<<"请输入学生个数:";
     cin>>n;
@@ -249,11 +246,9 @@ int Inputstur(){//录入学生成绩信息
         }
         stur[i].tolcre=tolcre;
     }
-    return 0;
 }
 
-
-int Input(){
+void Input(){//添加记录
     char in;
     cout<<"     1.录入学生基本信息"<<endl;
     cout<<"     2.录入学生成绩信息"<<endl;
@@ -278,7 +273,83 @@ int Input(){
     cin>>in;
     while (in=='y')
         break;
+}
+
+int Selectsturnum()//按学号查询成绩
+{
+    char in;
+    int i,key;
+    cout<<"输入需查看的学生学号：" <<endl;
+    cin>>i;
+    if (stub[i].stunum==i) key=1;
+    else key=0;
+        switch (key) {
+            case 1:
+                cout<<"姓名："<< stub[i].name<<endl;
+                cout<<"学号："<<stur[i].stunum<<endl;
+                cout<<"课程:"<<stur[i].cou<<endl;
+                cout<<"学分："<<stur[i].cre<<endl;
+                cout<<"平时成绩："<< stur[i].ures<<endl;
+                cout<<"试卷成绩" <<stur[i].eres<<endl;
+                cout<<"实验成绩:"<<stur[i].tres<<endl<<endl;
+                cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+                cin>>in;
+                while (in=='y')
+                    break;
+                break;
+            default:
+                cout<<"输入学号不存在"<<endl;
+                break;
+        }
+   
     return 0;
+}
+
+int Selectstubnum()//按学号查询基本信息
+{
+    char in;
+    int i,key;
+    cout<<"输入需查看的学生学号：" <<endl;
+    cin>>i;
+    if (stub[i].stunum==i) key=1;
+    else key=0;
+    switch (key) {
+        case 1:
+            cout<<"姓名："<< stub[i].name<<endl;
+            cout<<"学号："<<stur[i].stunum<<endl;
+            cout<<"性别："<<stub[i].sex<<endl;
+            cout<<"寝室号:"<<stub[i].doornum<<endl;
+            cout<<"电话:"<<stub[i].tel<<endl<<endl;
+            cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+            cin>>in;
+            while (in=='y')
+                break;
+            break;
+        default:
+            cout<<"输入学号不存在"<<endl;
+            break;
+    }
+    return 0;
+}
+
+int  Select()//信息查询
+{
+    cout<<"  1.查询学生基本信息"<<endl;
+    cout<<"  2.查询学生成绩信息"<<endl;
+    cout<<" 3.返回上一层"<<endl<<endl;
+    cout<<"请选择你要进行的操作："<<endl;
+    int key2;
+    cin>>key2;
+    while(key2!=1&&key2!=2&&key2!=3){
+        cout<<"输入错误,请重新输入:";
+        cin>>key2;}
+    if (key2==1)
+        Selectstubnum();
+    else if(key2==2)
+        Selectsturnum();
+    while(key2==3)
+        break;
+        return 0;
 }
 
 int main(int argc, const char * argv[]) {
