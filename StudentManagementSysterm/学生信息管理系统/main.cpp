@@ -42,9 +42,7 @@ void Input();//添加记录
 void Inputstub();//录入学生基本信息
 void Inputstur();//录入学生成绩信息
 
-int Show();//显示记录
-int Selectsturall();//查询全部成绩
-int Selectstuball();//查询全部基本信息
+void Show();//显示记录
 
 int Select();//信息查询
 int Selectstubnum();//查询基本信息函数(按学号)
@@ -65,6 +63,8 @@ void Sortstu();//排序函数
 void Modify();//修改密码
 
 int c;  //全局变量
+int student_all=0; //表示已经储存了多少个
+int student_num; //本次要输入的学生数量
 
 void rootmenu()                              //跟用户菜单选择系统函数
 {
@@ -92,7 +92,7 @@ void rootmenu()                              //跟用户菜单选择系统函数
             Input();
             break;
         case 2:
-            
+            Show();
             break;
         case 3:
             Select();
@@ -174,10 +174,9 @@ void login()   //登录界面
 }
 
 void Inputstub(){//录入学生基本信息
-    int n,i;
     cout<<"请输入学生个数:";
-    cin>>n;
-    for(i=0;i<n;i++){
+    cin>>student_num;
+    for(int i=student_all;i<student_all+student_num;i++){
         
         cout<<"输入学号:";
         cin>>stub[i].stunum;
@@ -194,13 +193,13 @@ void Inputstub(){//录入学生基本信息
         cout<<"输入电话:";
         cin>>stub[i].tel;
         }
+    student_all=student_all+student_num;//学生总数增加
 }
 
 void Inputstur(){//录入学生成绩信息
-    int n,i;
     cout<<"请输入学生个数:";
-    cin>>n;
-    for(i=0;i<n;i++){
+    cin>>student_num;
+    for(int i=student_all;i<student_all+student_num;i++){
         cout<<"输入学号:";
         cin>>stur[i].stunum;
     
@@ -246,6 +245,7 @@ void Inputstur(){//录入学生成绩信息
         }
         stur[i].tolcre=tolcre;
     }
+    student_all=student_all+student_num;//学生总数增加
 }
 
 void Input(){//添加记录
@@ -275,16 +275,25 @@ void Input(){//添加记录
         break;
 }
 
-int Selectsturnum()//按学号查询成绩
+void Show()//显示记录
 {
-    char in;
-    int i,key;
-    cout<<"输入需查看的学生学号：" <<endl;
-    cin>>i;
-    if (stub[i].stunum==i) key=1;
-    else key=0;
-        switch (key) {
-            case 1:
+    int in;
+    cout<<"     1.显示所有学生基本信息"<<endl;
+    cout<<"     2.显示所有学生成绩信息"<<endl;
+    cin>>in;
+    switch (in) {
+        case 1:
+            for (int i=0; i<student_all; i++) {
+                cout<<"姓名："<< stub[i].name<<endl;
+                cout<<"学号："<<stur[i].stunum<<endl;
+                cout<<"性别:"<<stub[i].sex<<endl;
+                cout<<"寝室号："<<stub[i].doornum<<endl;
+                cout<<"电话：" <<stub[i].tel<<endl;
+            }
+            cout<<"已经显示完毕";
+            break;
+        default:
+            for (int i=0; i<student_all; i++) {
                 cout<<"姓名："<< stub[i].name<<endl;
                 cout<<"学号："<<stur[i].stunum<<endl;
                 cout<<"课程:"<<stur[i].cou<<endl;
@@ -292,43 +301,65 @@ int Selectsturnum()//按学号查询成绩
                 cout<<"平时成绩："<< stur[i].ures<<endl;
                 cout<<"试卷成绩" <<stur[i].eres<<endl;
                 cout<<"实验成绩:"<<stur[i].tres<<endl<<endl;
-                cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
-                cin>>in;
-                while (in=='y')
-                    break;
-                break;
-            default:
-                cout<<"输入学号不存在"<<endl;
+            }
+            cout<<"已经显示完毕";
+            break;
+    }
+}
+
+int Selectsturnum()//按学号查询成绩
+{
+    char in;
+    int num;
+    int flag=0;//显示未找到
+    cout<<"输入需查看的学生学号：" <<endl;
+    cin>>num;
+    for (int i=0;i<student_all;i++)
+        if (stub[i].stunum==num&&flag!=0) {
+            cout<<"学号为"<<num<<"的学生基本信息如下"<<endl;
+            cout<<"姓名："<< stub[i].name<<endl;
+            cout<<"学号："<<stur[i].stunum<<endl;
+            cout<<"课程:"<<stur[i].cou<<endl;
+            cout<<"学分："<<stur[i].cre<<endl;
+            cout<<"平时成绩："<< stur[i].ures<<endl;
+            cout<<"试卷成绩" <<stur[i].eres<<endl;
+            cout<<"实验成绩:"<<stur[i].tres<<endl<<endl;
+            flag=1;
+            cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+            cin>>in;
+            while (in=='y')
                 break;
         }
-   
+        else if(stub[i].stunum==num&&flag!=0){
+            cout<<"学号重复"<<endl;
+        }
     return 0;
 }
 
 int Selectstubnum()//按学号查询基本信息
 {
     char in;
-    int i,key;
+    int num;
+    int flag=0;//显示未找到
     cout<<"输入需查看的学生学号：" <<endl;
-    cin>>i;
-    if (stub[i].stunum==i) key=1;
-    else key=0;
-    switch (key) {
-        case 1:
+    cin>>num;
+    for (int i=0;i<student_all;i++)
+        if (stub[i].stunum==num&&flag!=0) {
+            cout<<"学号为"<<num<<"的学生基本信息如下"<<endl;
             cout<<"姓名："<< stub[i].name<<endl;
             cout<<"学号："<<stur[i].stunum<<endl;
-            cout<<"性别："<<stub[i].sex<<endl;
-            cout<<"寝室号:"<<stub[i].doornum<<endl;
-            cout<<"电话:"<<stub[i].tel<<endl<<endl;
+            cout<<"性别:"<<stub[i].sex<<endl;
+            cout<<"寝室号："<<stub[i].doornum<<endl;
+            cout<<"电话：" <<stub[i].tel<<endl;
+            flag=1;
             cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
             cin>>in;
             while (in=='y')
                 break;
-            break;
-        default:
-            cout<<"输入学号不存在"<<endl;
-            break;
-    }
+        }
+        else if(stub[i].stunum==num&&flag!=0){
+            cout<<"学号重复"<<endl;
+        }
     return 0;
 }
 
