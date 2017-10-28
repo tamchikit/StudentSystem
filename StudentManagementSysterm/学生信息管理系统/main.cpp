@@ -33,9 +33,9 @@ StuB stub[1001];
 StuR stur[1001];  
 
 //定义函数
-void Add();
-void Addtolres(StuR stu);//计算总成绩
-void Addtolcre(StuR stu);//计算总学分
+void Add();//数据计算
+void Addtolres();//计算总成绩
+void Addtolcre();//计算总学分
 
 void Input();//添加记录
 void Inputstub();//录入学生基本信息
@@ -97,7 +97,7 @@ void rootmenu()                              //跟用户菜单选择系统函数
             Select();
             break;
         case 4:
-            
+            Add();
             break;
         case 5:
             
@@ -139,7 +139,7 @@ void guestmenu()                              //客人用户菜单选择系统�
             Show();
             break;
         case 3:
-            
+            Add();
             break;
         default:
             break;
@@ -150,6 +150,7 @@ void login()   //登录界面
 {
     string username,pwd;
     system("cls");
+    cout<<"欢迎来到学生信息管理系统"<<endl<<endl;
     cout<<"请输入用户名："<<endl;
     cin>>username;
     cout<<"请6位数输入密码："<<endl;
@@ -191,67 +192,68 @@ void Inputstub(){//录入学生基本信息
         
         cout<<"输入电话:";
         cin>>stub[i].tel;
+        
+        system("cls");
         }
     student_all=student_all+student_num;//学生总数增加
 }
 
 void Inputstur(){//录入学生成绩信息
     int num;
+    int flag=0;//显示未找到
+    int key;
     cout<<"请输入学生个数:";
     cin>>student_num;
     for(int i=student_all;i<student_all+student_num;i++){
-        cout<<"输入学号:";
+        cout<<"请输入学号:";
         cin>>num;
-        if (num!=stub[i].stunum) {
-            cout<<"学号不存在，请重新输入"<<endl;
-            cin>>num;
+        while (num!=stub[i].stunum)
+        {
+            cout<<"学号不存在,请输入："<<endl;
+            cout<<"1.添加该学生"<<endl;
+            cout<<"2.录入另一个已存在学生的成绩"<<endl;
+            cin>>key;
+            switch (key) {
+                case 1:
+                    Inputstub();
+                    num=stub[i].stunum;
+                    break;
+                default:
+                    cout<<"请输入学号"<<endl;
+                    cin>>num;
+                    break;
+            }
+            break;
+        }
+        if (stub[i].stunum==num&&flag!=0){
+            cout<<"学号重复"<<endl;
         }
         else
         {
             cout<<"输入课程:";
             //string cou;//课程
             cin>>stur[i].cou;
-        
+    
             cout<<"输入学分:";
             //int cre;//学分
             cin>>stur[i].cre;
-        
+    
             cout<<"输入平时成绩:";
             //int ures;//平时成绩
             cin>>stur[i].ures;
-        
+    
             cout<<"输入实验成绩:";
             //int tres;//实验成绩
             cin>>stur[i].tres;
-        
+    
             cout<<"试卷成绩:";
             //int pres;//试卷成绩
             cin>>stur[i].eres;
+      
+            flag=1;
+            system("cls");
         }
-        
-        float tolres;//总成绩
-        float tolcre;//总学分
-        if(stur[i].tres==-1){
-            tolres=stur[i].eres*0.7+stur[i].ures*0.3;
-        }else{
-            tolres=stur[i].eres*0.7+stur[i].ures*0.15+stur[i].tres*0.15;
-        }
-        stur[i].tolres=tolres;
-        //cout<<stur[i].tolres<<endl;
-        if(tolres>=90&&tolres<=100){
-            tolcre=stur[i].cre;
-        }else if(tolres>=80&&tolres<90){
-            tolcre=stur[i].cre*0.8;
-        }else if(tolres>=70&&tolres<80){
-            tolcre=stur[i].cre*0.75;
-        }else if(tolres>=60&&tolres<70){
-            tolcre=stur[i].cre*0.6;
-        }else{
-            tolcre=0;
-        }
-        stur[i].tolcre=tolcre;
     }
-    student_all=student_all+student_num;//学生总数增加
 }
 
 void Input(){//添加记录
@@ -275,7 +277,7 @@ void Input(){//添加记录
         default :
             break;
     }
-    cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+    cout<<"输入y继续当前操作,输入n(或其他)返回菜单:";
     cin>>in;
     while (in=='y')
         break;
@@ -347,7 +349,7 @@ int Selectsturnum()//按学号查询成绩
             cout<<"试卷成绩" <<stur[i].eres<<endl;
             cout<<"实验成绩:"<<stur[i].tres<<endl<<endl;
             flag=1;
-            cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+            cout<<"输入y继续当前操作,输入n(或其他)返回菜单:";
             cin>>in;
             while (in=='y')
                 break;
@@ -374,7 +376,7 @@ int Selectstubnum()//按学号查询基本信息
             cout<<"寝室号："<<stub[i].doornum<<endl;
             cout<<"电话：" <<stub[i].tel<<endl;
             flag=1;
-            cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+            cout<<"输入y继续当前操作,输入n(或其他)返回菜单:";
             cin>>in;
             while (in=='y')
                 break;
@@ -403,6 +405,99 @@ int  Select()//信息查询
     while(key2==3)
         break;
         return 0;
+}
+
+void Add()//数据计算
+{
+    cout<<"  1.计算学生总成绩"<<endl;
+    cout<<"  2.计算学生总学分"<<endl;
+    cout<<" 3.返回上一层"<<endl<<endl;
+    cout<<"请选择你要进行的操作："<<endl;
+    int key2;
+    cin>>key2;
+    while(key2!=1&&key2!=2&&key2!=3){
+        cout<<"输入错误,请重新输入:";
+        cin>>key2;}
+    if (key2==1)
+        Addtolres();
+        else if(key2==2)
+        Addtolcre();
+    while(key2==3)
+        break;
+}
+
+void Addtolres()//计算总成绩
+{
+    int num,flag=0,in;
+    cout<<"  请输入要计算数据的学生学号："<<endl;
+    cin>>num;
+    for (int i=0;i<student_all;i++)
+        if (stub[i].stunum==num&&flag==0)
+        {
+            float tolres;//总成绩
+            if(stur[i].tres==-1)
+            {
+                tolres=stur[i].eres*0.7+stur[i].ures*0.3;
+            }
+            else
+            {
+                tolres=stur[i].eres*0.7+stur[i].ures*0.15+stur[i].tres*0.15;
+            }
+            stur[i].tolres=tolres;
+            cout<<"  学号为"<<num<<"的学生的总成绩为："<<endl;
+            cout<<stur[i].tolres<<endl;
+            flag=1;
+            cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+            cin>>in;
+            while (in=='y')
+                break;
+        }
+        else if(stub[i].stunum==num&&flag!=0){
+            cout<<"学号重复"<<endl;
+        }
+}
+void Addtolcre()//计算总学分
+{
+    int num,flag=0,in;
+    cout<<"  请输入要计算数据的学生学号："<<endl;
+    cin>>num;
+    for (int i=0;i<student_all;i++)
+        if (stub[i].stunum==num&&flag==0)
+        {
+        float tolcre;//总学分
+        float tolres=stur[i].tolres;//总成绩
+            if(tolres>=90&&tolres<=100)
+            {
+                tolcre=stur[i].cre;
+            }
+            else if(tolres>=80&&tolres<90)
+            {
+                tolcre=stur[i].cre*0.8;
+            }
+            else if(tolres>=70&&tolres<80)
+            {
+                tolcre=stur[i].cre*0.75;
+            }
+            else if(tolres>=60&&tolres<70)
+            {
+                tolcre=stur[i].cre*0.6;
+            }
+            else
+            {
+                tolcre=0;
+            }
+            stur[i].tolcre=tolcre;
+            cout<<"  学号为"<<num<<"的学生的总学分为："<<endl;
+            cout<<stur[i].tolcre<<endl;
+            flag=1;
+            cout<<"输入y继续当前操作,输入n(或其他)返回菜单:";
+            cin>>in;
+            while (in=='y')
+                break;
+        }
+        else if(stub[i].stunum==num&&flag!=0){
+            cout<<"学号重复"<<endl;
+        }
 }
 
 int main(int argc, const char * argv[]) {
