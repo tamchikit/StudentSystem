@@ -21,7 +21,6 @@ typedef struct StuBasic{ //基本信息
     string tel;//电话(七位)  
 }StuB;  
 typedef struct StuResult{//成绩信息  
-    int stunum;//学号  
     string cou;//课程
     float cre;//学分  
     float ures;//平时成绩  
@@ -68,7 +67,7 @@ int student_num; //本次要输入的学生数量
 
 void rootmenu()                              //跟用户菜单选择系统函数
 {
-        system("clear");
+        system("cls");
         std::cout<<"\t\t     ╭♈♉♊♋♌♎══■□■□══════╮\n";
         std::cout<<"\t\t     │       学生信息管理系统     |\n";
         std::cout<<"\t\t     ╰══════■□■□══♏♐♑♓♒♍╯\n";
@@ -116,7 +115,7 @@ void rootmenu()                              //跟用户菜单选择系统函数
 
 void guestmenu()                              //客人用户菜单选择系统函数
 {
-        system("clear");
+        system("cls");
         std::cout<<"\t\t    ╭♈♉♊♋♌♎══■□■□══════╮\n";
         std::cout<<"\t\t    │       学生信息管理系统     |\n";
         std::cout<<"\t\t    ╰══════■□■□══♏♐♑♓♒♍╯\n";
@@ -137,7 +136,7 @@ void guestmenu()                              //客人用户菜单选择系统�
             Select();
             break;
         case 2:
-            
+            Show();
             break;
         case 3:
             
@@ -150,7 +149,7 @@ void guestmenu()                              //客人用户菜单选择系统�
 void login()   //登录界面
 {
     string username,pwd;
-    system("clear");
+    system("cls");
     cout<<"请输入用户名："<<endl;
     cin>>username;
     cout<<"请6位数输入密码："<<endl;
@@ -197,31 +196,38 @@ void Inputstub(){//录入学生基本信息
 }
 
 void Inputstur(){//录入学生成绩信息
+    int num;
     cout<<"请输入学生个数:";
     cin>>student_num;
     for(int i=student_all;i<student_all+student_num;i++){
         cout<<"输入学号:";
-        cin>>stur[i].stunum;
-    
-        cout<<"输入课程:";
-        //string cou;//课程
-        cin>>stur[i].cou;
+        cin>>num;
+        if (num!=stub[i].stunum) {
+            cout<<"学号不存在，请重新输入"<<endl;
+            cin>>num;
+        }
+        else
+        {
+            cout<<"输入课程:";
+            //string cou;//课程
+            cin>>stur[i].cou;
         
-        cout<<"输入学分:";
-        //int cre;//学分
-        cin>>stur[i].cre;
+            cout<<"输入学分:";
+            //int cre;//学分
+            cin>>stur[i].cre;
         
-        cout<<"输入平时成绩:";
-        //int ures;//平时成绩
-        cin>>stur[i].ures;
+            cout<<"输入平时成绩:";
+            //int ures;//平时成绩
+            cin>>stur[i].ures;
         
-        cout<<"输入实验成绩:";
-        //int tres;//实验成绩
-        cin>>stur[i].tres;
+            cout<<"输入实验成绩:";
+            //int tres;//实验成绩
+            cin>>stur[i].tres;
         
-        cout<<"试卷成绩:";
-        //int pres;//试卷成绩
-        cin>>stur[i].eres;
+            cout<<"试卷成绩:";
+            //int pres;//试卷成绩
+            cin>>stur[i].eres;
+        }
         
         float tolres;//总成绩
         float tolcre;//总学分
@@ -280,22 +286,38 @@ void Show()//显示记录
     int in;
     cout<<"     1.显示所有学生基本信息"<<endl;
     cout<<"     2.显示所有学生成绩信息"<<endl;
+    cout<<"     3.显示所有学生所有信息"<<endl;
     cin>>in;
     switch (in) {
         case 1:
             for (int i=0; i<student_all; i++) {
                 cout<<"姓名："<< stub[i].name<<endl;
-                cout<<"学号："<<stur[i].stunum<<endl;
+                cout<<"学号："<<stub[i].stunum<<endl;
                 cout<<"性别:"<<stub[i].sex<<endl;
                 cout<<"寝室号："<<stub[i].doornum<<endl;
                 cout<<"电话：" <<stub[i].tel<<endl;
             }
             cout<<"已经显示完毕";
             break;
+        case 2:
+            for (int i=0; i<student_all; i++) {
+                cout<<"姓名："<< stub[i].name<<endl;
+                cout<<"学号："<<stub[i].stunum<<endl;
+                cout<<"课程:"<<stur[i].cou<<endl;
+                cout<<"学分："<<stur[i].cre<<endl;
+                cout<<"平时成绩："<< stur[i].ures<<endl;
+                cout<<"试卷成绩" <<stur[i].eres<<endl;
+                cout<<"实验成绩:"<<stur[i].tres<<endl<<endl;
+            }
+            cout<<"已经显示完毕";
+            break;
         default:
             for (int i=0; i<student_all; i++) {
                 cout<<"姓名："<< stub[i].name<<endl;
-                cout<<"学号："<<stur[i].stunum<<endl;
+                cout<<"学号："<<stub[i].stunum<<endl;
+                cout<<"性别:"<<stub[i].sex<<endl;
+                cout<<"寝室号："<<stub[i].doornum<<endl;
+                cout<<"电话：" <<stub[i].tel<<endl;
                 cout<<"课程:"<<stur[i].cou<<endl;
                 cout<<"学分："<<stur[i].cre<<endl;
                 cout<<"平时成绩："<< stur[i].ures<<endl;
@@ -315,10 +337,10 @@ int Selectsturnum()//按学号查询成绩
     cout<<"输入需查看的学生学号：" <<endl;
     cin>>num;
     for (int i=0;i<student_all;i++)
-        if (stub[i].stunum==num&&flag!=0) {
+        if (stub[i].stunum==num&&flag==0) {
             cout<<"学号为"<<num<<"的学生基本信息如下"<<endl;
             cout<<"姓名："<< stub[i].name<<endl;
-            cout<<"学号："<<stur[i].stunum<<endl;
+            cout<<"学号："<<stub[i].stunum<<endl;
             cout<<"课程:"<<stur[i].cou<<endl;
             cout<<"学分："<<stur[i].cre<<endl;
             cout<<"平时成绩："<< stur[i].ures<<endl;
@@ -344,10 +366,10 @@ int Selectstubnum()//按学号查询基本信息
     cout<<"输入需查看的学生学号：" <<endl;
     cin>>num;
     for (int i=0;i<student_all;i++)
-        if (stub[i].stunum==num&&flag!=0) {
+        if (stub[i].stunum==num&&flag==0) {
             cout<<"学号为"<<num<<"的学生基本信息如下"<<endl;
             cout<<"姓名："<< stub[i].name<<endl;
-            cout<<"学号："<<stur[i].stunum<<endl;
+            cout<<"学号："<<stub[i].stunum<<endl;
             cout<<"性别:"<<stub[i].sex<<endl;
             cout<<"寝室号："<<stub[i].doornum<<endl;
             cout<<"电话：" <<stub[i].tel<<endl;
