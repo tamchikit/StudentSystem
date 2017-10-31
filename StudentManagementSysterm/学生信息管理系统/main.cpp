@@ -60,7 +60,7 @@ void Rewritestur();//修改成绩信息(按学号)
 void Compare(StuR s1,StuR s2);//排序比较函数
 void Sortstu();//排序函数
 
-int Modify();//修改密码
+void Modify();//修改密码
 
 void store();//导出为doc
 
@@ -69,7 +69,7 @@ void logout();//登出
 int c;  //全局变量
 int student_all=0; //表示已经储存了多少个
 int student_num; //本次要输入的学生数量
-int pp;
+int pp=123456;
 
 
 
@@ -88,7 +88,7 @@ void rootmenu()                              //跟用户菜单选择系统函数
         std::cout<<"\t\t    │                          │\n";
         std::cout<<"\t\t    │ 7. 退出登录    8. 导出信息  |\n";
         std::cout<<"\t\t    │                          │\n";
-        std::cout<<"\t\t    │               0. 退出程序  |\n";
+        std::cout<<"\t\t    │               0. 退出程序 |\n";
         std::cout<<"\t\t    └──────────────────────────┘\n";
         std::cout<<"\t\t请您选择(0-8):";
     cin>>c;
@@ -122,35 +122,37 @@ void rootmenu()                              //跟用户菜单选择系统函数
             store();
             break;
         default:
+            exit(0);
             break;
     }
 }
 
-int Modify()//修改密码
+void Modify()//修改密码
 {
-    int pp, verpsw,tempsw1;//pp为原始正确密码，verpsw为验证密码,tempsw为临时密码
-    pp = 123456;
-    cout << "请输入6位数原始密码:"<<endl;
-    cin >> verpsw;
-    while (verpsw != pp)
-    {
-        cout << "密码错误，请重新输入:" << endl;
+    int verpsw, tempsw1, tempsw2 = 0;//pp为原始正确密码，verpsw为验证密码,tempsw为临时密码
+        cout << "请输入原始密码"<<endl;
         cin >> verpsw;
-    }
-    cout << "密码正确，验证成功." << endl;
-    cout << "请输入6位数新密码,输入1退出至主界面" << endl;
-    cin >> tempsw1;
-    if (tempsw1 == 1)
-    {
+        while (verpsw != pp)
+        {
+            cout << "密码错误，请重新输入" << endl;
+            cin >> verpsw;
+        }
+        cout << "密码正确，验证成功" << endl;
+        do {
+            cout << "请输入需要新密码,输入1退出至主界面:" << endl;
+            cin >> tempsw1;
+            if (tempsw1 == 1)
+            {
+                rootmenu();
+                break;
+            }
+            else cout << "请再次输入新密码:" << endl;
+            cin >> tempsw2;
+        }
+        while (tempsw1 != tempsw2);
+        cout << "验证成功.";
+        pp = tempsw2;
         rootmenu();
-        
-    }
-    else
-    { cout << "请再次输入新密码." << endl;
-        cin >> pp;
-    }
-    cout << "修改成功."<<endl;
-    return pp;
 }
 
 
@@ -197,7 +199,6 @@ void guestmenu()                              //客人用户菜单选择系统�
 
 void login()   //登录界面
 {
-    pp=123456;
     string username;
     int pwd;
     system("cls");
@@ -249,22 +250,24 @@ void Inputstub(){//录入学生基本信息
     student_all=student_all+student_num;//学生总数增加
 }
 
-void Inputstur(){//录入学生成绩信息
-    int num;
-    int flag=0;//显示未找到
+void Inputstur() {//录入学生成绩信息
+    int num,y;
+    y=0;
     int key;
-    cout<<"请输入学生个数:";
-    cin>>student_num;
-    for(int i=student_all;i<student_all+student_num;i++){
-        cout<<"请输入学号:";
-        cin>>num;
-        while (num!=stub[i].stunum)
+    cout << "请输入学生个数:";
+    cin >> student_num;
+    for (int i=student_all ; i<student_all + student_num; i++) {
+        cout << "请输入学号:";
+        cin >> num;
+        while(num!=stub[y].stunum&&y<=student_all)
+        {y++;}
+        if(y>student_all)
         {
-            cout<<"学号不存在,请输入："<<endl;
-            cout<<"1.添加该学生"<<endl;
-            cout<<"2.录入另一个已存在学生的成绩"<<endl;
-            cout<<"请选择你要进行的操作："<<endl;
-            cin>>key;
+            cout << "学号不存在,请输入：" << endl;
+            cout << "1.添加该学生" << endl;
+            cout << "2.录入另一个已存在学生的成绩" << endl;
+            cout << "请选择你要进行的操作：" << endl;
+            cin >> key;
             switch (key) {
                 case 1:
                     Inputstub();
@@ -276,9 +279,6 @@ void Inputstur(){//录入学生成绩信息
                     break;
             }
             break;
-        }
-        if (stub[i].stunum==num&&flag!=0){
-            cout<<"学号重复"<<endl;
         }
         else
         {
@@ -302,7 +302,6 @@ void Inputstur(){//录入学生成绩信息
             //int pres;//试卷成绩
             cin>>stur[i].eres;
       
-            flag=1;
             system("cls");
         }
     }
@@ -312,11 +311,11 @@ void Input(){//添加记录
     char in;
     cout<<"     1.录入学生基本信息"<<endl;
     cout<<"     2.录入学生成绩信息"<<endl;
-    cout<<"     3.按任意键返回菜单"<<endl;
+    cout<<"     3.返回菜单"<<endl;
     int key1;
     cout<<"请选择: ";
     cin>>key1;
-    while(key1!=1&&key1!=2){
+    while(key1!=1&&key1!=2&&key1!=3){
         cout<<"输入错误,请重新输入:";
         cin>>key1;
     }
@@ -328,6 +327,7 @@ void Input(){//添加记录
             Inputstur();
             break;
         default :
+            rootmenu();
             break;
     }
     cout<<"输入y继续当前操作,输入n(或其他)返回菜单:";
