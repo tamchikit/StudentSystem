@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include<string>
+#include<fstream>
 using namespace std;
 
 
@@ -61,6 +62,8 @@ void Sortstu();//排序函数
 
 int Modify();//修改密码
 
+void store();//导出为doc
+
 void logout();//登出
 
 int c;  //全局变量
@@ -83,11 +86,13 @@ void rootmenu()                              //跟用户菜单选择系统函数
         std::cout<<"\t\t    │                          │\n";
         std::cout<<"\t\t    │ 5. 修改记录    6. 修改密码  │\n";
         std::cout<<"\t\t    │                          │\n";
-        std::cout<<"\t\t    │ 7. 退出登录    0. 退出程序  |\n";
+        std::cout<<"\t\t    │ 7. 退出登录    8. 导出信息  |\n";
+        std::cout<<"\t\t    │                          │\n";
+        std::cout<<"\t\t    │               0. 退出程序  |\n";
         std::cout<<"\t\t    └──────────────────────────┘\n";
-        std::cout<<"\t\t请您选择(0-6):";
+        std::cout<<"\t\t请您选择(0-8):";
     cin>>c;
-    while(c<0||c>7){
+    while(c<0||c>8){
     cout<<"输入错误请重新输入"<<endl;
     cin>>c;
     }
@@ -112,6 +117,9 @@ void rootmenu()                              //跟用户菜单选择系统函数
             break;
         case 7:
             logout();
+            break;
+        case 8:
+            store();
             break;
         default:
             break;
@@ -157,13 +165,15 @@ void guestmenu()                              //客人用户菜单选择系统�
         std::cout<<"\t\t    │                          |\n";
         std::cout<<"\t\t    │ 3. 数据计算    4.退出登录   │\n";
         std::cout<<"\t\t    │                          │\n";
-        std::cout<<"\t\t    │ 0. 退出程序               |\n";
+        std::cout<<"\t\t    │ 5. 导出信息    0. 退出程序  |\n";
         std::cout<<"\t\t    └──────────────────────────┘\n";
-        std::cout<<"\t\t请您选择(0-4):";
+        std::cout<<"\t\t请您选择(0-5):";
     cin>>c;
-    while(c<0||c>4){
+    while(c<0||c>5)
+    {
     cout<<"输入错误请重新输入"<<endl;
-    cin>>c;}
+    cin>>c;
+    }
     switch (c) {
         case 1:
             Select();
@@ -176,6 +186,9 @@ void guestmenu()                              //客人用户菜单选择系统�
             break;
         case 4:
             logout();
+            break;
+        case 5:
+            store();
             break;
         default:
             break;
@@ -250,6 +263,7 @@ void Inputstur(){//录入学生成绩信息
             cout<<"学号不存在,请输入："<<endl;
             cout<<"1.添加该学生"<<endl;
             cout<<"2.录入另一个已存在学生的成绩"<<endl;
+            cout<<"请选择你要进行的操作："<<endl;
             cin>>key;
             switch (key) {
                 case 1:
@@ -514,14 +528,15 @@ void Addtolres()//计算总成绩
             cout<<"  学号为"<<num<<"的学生的总成绩为："<<endl;
             cout<<stur[i].tolres<<endl;
             flag=1;
-            cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
-            cin>>in;
-            while (in=='y')
-                break;
+            
         }
         else if(stub[i].stunum==num&&flag!=0){
             cout<<"学号重复"<<endl;
         }
+    cout<<"输入y继续当前操作,输入n(或其他)返回上一层:";
+    cin>>in;
+    while (in=='y')
+        break;
 }
 void Addtolcre()//计算总学分
 {
@@ -692,6 +707,32 @@ void Rewrite()  //修改记录
           }
      }
 
+void store()//导出信息
+{
+    char in;
+    ofstream fout("/Users/tanzhijie/Desktop/Studentsysterm.txt");
+    fout<<"学号   学生姓名   学生性别   寝室号   电话            课程    学分    平时成绩    实验成绩    考试成绩    总成绩    总学分"<<endl;
+    for (int i=0; i<student_all; i++)
+    {
+        fout<<stub[i].stunum;
+        fout<<"      "<<stub[i].name;
+        fout<<"         "<<stub[i].sex;
+        fout<<"        "<<stub[i].doornum;
+        fout<<"      "<<stub[i].tel;
+        fout<<"     "<<stur[i].cou;
+        fout<<"      "<<stur[i].cre;
+        fout<<"       "<<stur[i].ures;
+        fout<<"         "<<stur[i].tres;
+        fout<<"          "<<stur[i].eres;
+        fout<<"         "<<stur[i].tolres;
+        fout<<"    "<<stur[i].tolcre<<endl;
+    }
+    cout<<"导出成功"<<endl;
+    cout<<"输入y继续当前操作,输入n(或其他)返回菜单:";
+    cin>>in;
+    while (in=='y')
+        break;
+}
 
 void logout()//登出
 {
