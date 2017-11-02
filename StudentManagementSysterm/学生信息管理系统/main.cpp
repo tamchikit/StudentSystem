@@ -58,7 +58,8 @@ void Rewritestub();//修改基本信息(按学号)
 void Rewritestur();//修改成绩信息(按学号)
 
 void Compare(StuR s1,StuR s2);//排序比较函数
-void Sortstu();//排序函数
+void Sortstutores();//排序总成绩函数
+void Sortstutocre();//排序总学分函数
 
 void Modify();//修改密码
 
@@ -338,13 +339,13 @@ void Input(){//添加记录
 
 void Show()//显示记录
 {
-    int in;
+    int in1,in2;
     cout<<"     1.显示所有学生基本信息"<<endl;
     cout<<"     2.显示所有学生成绩信息"<<endl;
     cout<<"     3.显示所有学生所有信息"<<endl;
     cout<<"请选择你要进行的操作："<<endl;
-    cin>>in;
-    switch (in) {
+    cin>>in1;
+    switch (in1) {
         case 1:
             for (int i=0; i<student_all; i++) {
                 cout<<"姓名："<< stub[i].name<<endl;
@@ -381,6 +382,22 @@ void Show()//显示记录
                 cout<<"实验成绩:"<<stur[i].tres<<endl<<endl;
             }
             cout<<"已经显示完毕";
+            break;
+    }
+    cout<<"如需排序学生信息，请选择："<<endl;
+    cout<<"1、按照总成绩由高到低排序；"<<endl;
+    cout<<"2、按照总学分由高到低排序；"<<endl;
+    cout<<"3、返回上一层；"<<endl;
+    cout<<"请选择操作："<<endl;
+    cin>>in2;
+    switch (in2) {
+        case 1:
+            Sortstutores();
+            break;
+        case 2:
+            Sortstutocre();
+            break;
+        default:
             break;
     }
 }
@@ -484,6 +501,72 @@ int  Select()//信息查询
     while(key2==4)
         break;
         return 0;
+}
+
+void Sortstutores()   //排序总成绩函数
+{
+    struct StuBasic tmp1;
+    struct StuResult tmp2;
+    for(int i=0;i<student_all-1;i++)
+    {
+        int max=i;
+        for (int j=i+1; j<student_all; j++) {
+            if (stur[j].tolres>stur[i].tolres)
+            {
+                max=j;
+            }
+        }
+        if (max!=i) {
+             tmp1=stub[i];
+            stub[i]=stub[max];
+            stub[max]=tmp1;
+            tmp2=stur[i];
+            stur[i]=stur[max];
+            stur[max]=tmp2;
+        }
+    }
+    cout<<"已按照总成绩排序，输入0回到菜单"<<endl;
+    int in;
+    cin>>in;
+    switch (in) {
+        case 0:
+            break;
+        default:
+            break;
+    }
+}
+
+void Sortstutocre()   //排序总学分函数
+{
+    struct StuBasic tmp1;
+    struct StuResult tmp2;
+    for(int i=0;i<student_all-1;i++)
+    {
+        int max=i;
+        for (int j=i+1; j<student_all; j++) {
+            if (stur[j].tolcre>stur[i].tolcre)
+            {
+                max=j;
+            }
+        }
+        if (max!=i) {
+            tmp1=stub[i];
+            stub[i]=stub[max];
+            stub[max]=tmp1;
+            tmp2=stur[i];
+            stur[i]=stur[max];
+            stur[max]=tmp2;
+        }
+    }
+    cout<<"已按照总学分排序，输入0回到菜单"<<endl;
+    int in;
+    cin>>in;
+    switch (in) {
+        case 0:
+            break;
+        default:
+            break;
+    }
 }
 
 void Add()//数据计算
@@ -727,7 +810,7 @@ void store()//导出信息
         fout<<"         "<<stur[i].tolres;
         fout<<"    "<<stur[i].tolcre<<endl;
     }
-    cout<<"导出成功"<<endl;
+    cout<<"导出成功，已经导出为 Studentsysterm.txt"<<endl;
     cout<<"输入y继续当前操作,输入n(或其他)返回菜单:";
     cin>>in;
     while (in=='y')
